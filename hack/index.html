@@ -1,0 +1,266 @@
+<!doctype html>
+
+<html lang=en>
+  <head>
+    <title>Hack on JSHint</title>
+
+    <meta charset=utf8>
+    <meta name=description content="JSHint, a JavaScript Code Quality Tool">
+    <meta name=author      content="Anton Kovalyov">
+
+    
+    <link rel=stylesheet href="/res/docs.min.css">
+    
+
+    <script>
+      if (window.self !== window.top)
+        window.top.location.href = document.location.href;
+
+      function jumpToOption() {
+        var input = document.getElementById("jump-to-option")
+
+        if (/^\s*$/.test(input.value))
+          return false
+
+        _gaq.push(["_trackEvent", "Docs", "jumpToOption", input.value]);
+
+        if (window.location.pathname === "/docs/options/")
+          window.location.hash = "#" + input.value
+        else
+          window.location = "/docs/options/#" + input.value
+
+        return false
+      }
+
+      var _gaq = _gaq || [];
+      _gaq.push(["_setAccount", "UA-126146-15"]);
+      _gaq.push(["_setDomainName", "jshint.com"]);
+      _gaq.push(["_trackPageview"]);
+    </script>
+  </head>
+
+  <body>
+    <nav class="header navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/">JSHint</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+              <li><a href="/about/">About</a></li>
+              <li><a href="/docs/">Docs</a></li>
+              <li><a href="/install/">Install</a></li>
+              <li><a href="/hack/">Hack</a></li>
+              <li><a href="/blog/">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <form class="navbar-form navbar-left" role="search" onsubmit="return jumpToOption()">
+              <div class="form-group">
+                <input id="jump-to-option" type="text" class="form-control" placeholder="Option name">
+              </div>
+              <button type="submit" class="btn btn-default">Jump to docs</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container content">
+      <div class="row">
+        <div class="col-md-8">
+          <h1>Hack</h1>
+
+<p>Good news everyone, JSHint is open source! Our source code is hosted on
+<a href="http://github.com/jshint/jshint/">GitHub</a>.</p>
+
+<p><a href="https://travis-ci.org/jshint/jshint"><img alt="Build Status" src="https://travis-ci.org/jshint/jshint.png?branch=master"/></a></p>
+
+<h3>How to contribute</h3>
+
+<p>The best way to make sure your issue is addressed is to submit a patch. We
+accept patches through all mediums: pull requests, email, issue comment, tweet
+with a link to a snippet, graffiti outside of Anton&#39;s apartment, etc.</p>
+
+<p>However, before sending a patch, please make sure that the following applies:</p>
+
+<ul><li>Your commit message links to that issue.</li><li>Your commit message is very descriptive (<a href="https://github.com/jshint/jshint/commit/5751c5ed249b7a035758a3ae876cfa1a360fd144">example</a>).</li><li>Your patch doesn&#39;t have useless merge commits.</li><li>Your coding style is similar to ours (see below).</li><li>Your patch is 100% tested. We don&#39;t accept any test regressions.</li><li>All tests and lint checks pass (<code>npm test</code>).</li><li>You understand that we&#39;re super grateful for your patch.</li></ul>
+
+<h3>Bug Bounties</h3>
+
+<p>Some bugs are so important to us, we will pay you if you fix them! Go to
+<a href="https://www.bountysource.com/#trackers/48759-jshint">our page on BountySource</a>
+to see which bugs have bounties behind them.</p>
+
+<p>Really want to have something fixed but don&#39;t have time? You can add your
+own bounty to any JSHint bug and make it more attractive for potential
+contributors!</p>
+
+<p><strong>Rule:</strong> A bug is considered fixed only after it has been merged into the
+master branch of the main JSHint repository.</p>
+
+<h3>Development Environment</h3>
+
+<p>JSHint has a number of dependencies specified in its <code>package.json</code> file. To
+install them just run the following command from within your repo directory:</p>
+
+<pre><code>$ npm install</code></pre>
+
+<p>After that you will be able to run the edge version of JSHint using <code>bin/jshint</code>
+or build the release bundles using <code>bin/build</code>.</p>
+
+<h3>Coding Style</h3>
+
+<p>This section describes our coding style guide. You might not agree with it and
+that&#39;s fine but if you&#39;re going to send us patches treat this guide as a law.</p>
+
+<p>Our main rule is simple:</p>
+
+<blockquote><p>All code in any code-base should look like a single person typed it, no matter how many people contributed. —<a href="https://github.com/rwldrn/idiomatic.js/">idiomatic.js</a></p></blockquote>
+
+<h4>Whitespace:</h4>
+
+<ul><li>We use hard tabs everywhere.</li><li><a href="http://www.emacswiki.org/SmartTabs">Smart tabs</a> are okay.</li><li>Use one space after <code>if</code>, <code>for</code>, <code>while</code>, etc.</li><li><p>Use one space after <code>function</code> for anonymous functions but not for named
+functions:</p><pre><code>var a = function () {};
+function a() {}</code></pre></li><li><p>Feel free to indent variable assignments or property definitions if it
+makes the code look better. But don&#39;t abuse that:</p><pre><code>// Good
+var next = token.peak();
+var prev = token.peak(-1);
+var cur  = token.current;
+
+var scope = {
+  name:   &quot;(global)&quot;,
+  parent: parentScope,
+  vars:   [],
+  uses:   []
+};
+
+// Bad
+var cur         = token.current;
+var isSemicolon = cur.isPunctuator(&quot;;&quot;);</code></pre></li><li><p>Wrap multi-line comments with new lines on both sides.</p></li></ul>
+
+<h4>Variables:</h4>
+
+<ul><li><p>Use one <code>var</code> per variable unless you don&#39;t assign any values to it (and it&#39;s
+short enough):</p><pre><code>var token = tokens.find(index);
+var scope = scopes.current;
+var next, prev, cur;</code></pre></li><li><p>Don&#39;t be overly descriptive with your variable names but don&#39;t abuse
+one-letter variables either. Find a sweet spot somewhere in between.</p></li></ul>
+
+<h4>Comments:</h4>
+
+<ul><li>Use <code>//</code> for all comments.</li><li>Comment everything that is not obvious.</li><li>If you&#39;re adding a new check, write a comment describing why this check is
+important and what it checks for.</li></ul>
+
+<h4>Misc:</h4>
+
+<ul><li>Always use strict mode.</li><li>Always use strict comparisons: <code>===</code> and <code>!==</code>.</li><li>Use semicolons.</li><li>Don&#39;t use comma-first notation.</li><li>Try not to chain stuff unless it <strong>really</strong> helps (e.g. in tests).</li><li><p>Don&#39;t short-circuit expressions if you&#39;re not assigning the result:</p><pre><code>// Good
+token = token || tokens.find(0);
+
+// Bad
+token.isPunctuator(&quot;;&quot;) &amp;&amp; report.addWarning(&quot;W001&quot;);
+
+// Good
+if (token.isPunctuator(&quot;;&quot;))
+  report.addWarning(&quot;W001&quot;);</code></pre></li></ul>
+
+<p>Today we use JSHint&#39;s <code>white:true</code> to enforce some of these rules. Eventually
+we&#39;ll switch to JSHint Next style enforcing component. But it&#39;s not ready yet.</p>
+
+<h3>License</h3>
+
+<p>Most files are under this license:</p>
+
+<pre><code>Copyright 2013 Anton Kovalyov (http://jshint.com)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+&quot;Software&quot;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</code></pre>
+
+<p>One file, however, is under a slightly modified version of the license. Unfortunately,
+due to historical reasons and Crockford&#39;s stubborness we can&#39;t change it. Here&#39;s this
+modified license:</p>
+
+<pre><code>JSHint, by JSHint Community.
+
+This file (and this file only) is licensed under the same slightly modified
+MIT license that JSLint is. It stops evil-doers everywhere:
+
+Copyright (c) 2002 Douglas Crockford  (www.JSLint.com)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the &quot;Software&quot;),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+The Software shall be used for Good, not Evil.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</code></pre>
+        </div>
+
+        <div class="col-md-4">
+          
+
+          
+          <div class="ad">
+            <div id="carbonads-container">
+              <div class="carbonad">
+                <div id="azcarbon"></div>
+                <script type="text/javascript">
+                  var z = document.createElement("script");
+                  z.type = "text/javascript";
+                  z.async = true;
+                  z.src = "http://engine.carbonads.com/z/49189/azcarbon_2_1_0_HORIZ";
+                  var s = document.getElementsByTagName("script")[0];
+                  s.parentNode.insertBefore(z, s);
+                </script>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        ga.src = "//www.google-analytics.com/ga.js";
+
+        var st = document.getElementsByTagName("script")[0];
+        st.parentNode.insertBefore(ga, st);
+      })();
+    </script>
+  </body>
+</html>
